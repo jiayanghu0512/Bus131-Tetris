@@ -1,4 +1,10 @@
 {
+  "name": "bus131-tetris",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
   "devDependencies": {
     "wrangler": "^4.131.0"
   }
