@@ -40,7 +40,7 @@ Legend: `[x]` done · `[ ]` not started · `[~]` in progress
 - **Done when:** a public Cloudflare URL loads the playable game.
 - **Status:** done — https://bus131-tetris.pages.dev (Cloudflare Pages)
 
-### [~] T0.5 — Write the three project documents
+### [x] T0.5 — Write the three project documents
 - **Depends on:** T0.1–T0.4
 - **Files:** `README.md`, `ProductSpec.md`, `FEATUREROADMAP_workplan.md`
 - **Done when:** all three exist, are readable by a non-programmer, and the
@@ -63,20 +63,20 @@ Cloudflare Pages serves static files only. Durable Objects — the thing that ma
 multiplayer possible — need Cloudflare Workers. This phase changes where the game
 is hosted without changing how it plays.
 
-### [ ] T1.1 — Move the browser files into `public/`
+### [x] T1.1 — Move the browser files into `public/`
 - **Depends on:** T0.5
 - **Files:** move `index.html`, `style.css`, `script.js` → `public/`
 - **Done when:** the folder structure matches ProductSpec §5.2 and the game still
   opens correctly from `public/index.html`.
 
-### [ ] T1.2 — Add `wrangler.jsonc`
+### [x] T1.2 — Add `wrangler.jsonc`
 - **Depends on:** T1.1
 - **Files:** `wrangler.jsonc` (new)
 - **Done when:** the file sets `name`, `main`, `compatibility_date` (today's date),
   `{"observability": {"enabled": true}}`, and an `"assets"` block pointing at
   `./public` with `not_found_handling: "single-page-application"`.
 
-### [ ] T1.3 — Add the Worker entry point
+### [x] T1.3 — Add the Worker entry point
 - **Depends on:** T1.2
 - **Files:** `src/index.js` (new)
 - **Done when:** the Worker serves the static assets for normal page loads and
@@ -93,20 +93,20 @@ is hosted without changing how it plays.
 
 ## Phase 2 — Room plumbing (screens and joining)
 
-### [ ] T2.1 — Build the landing screen
+### [x] T2.1 — Build the landing screen
 - **Depends on:** T1.4
 - **Files:** `public/index.html`, `public/style.css`
 - **Done when:** the landing screen matches the Figma design, and PLAY SOLO starts
   the existing single-player game while MULTIPLAYER asks for a display name.
 
-### [ ] T2.2 — Build the room lobby screen
+### [x] T2.2 — Build the room lobby screen
 - **Depends on:** T2.1
 - **Files:** `public/index.html`, `public/style.css`
 - **Done when:** a player can create a room (a 6-character code is generated and
   shown) or type an existing code to join; the player list renders filled and empty
   slots as designed. No networking yet — local UI only.
 
-### [ ] T2.3 — Write the WebSocket client module
+### [x] T2.3 — Write the WebSocket client module
 - **Depends on:** T2.2, T1.3
 - **Files:** `public/net.js` (new), `public/index.html`
 - **Done when:** the browser opens a native WebSocket to `/api/room/:code`, sends
@@ -117,28 +117,28 @@ is hosted without changing how it plays.
 
 ## Phase 3 — The Durable Object game room
 
-### [ ] T3.1 — Create the `GameRoom` Durable Object
+### [x] T3.1 — Create the `GameRoom` Durable Object
 - **Depends on:** T2.3
 - **Files:** `src/GameRoom.js` (new), `wrangler.jsonc`, `src/index.js`
 - **Done when:** `wrangler.jsonc` declares the binding `ROOM` and a `migrations`
   entry using `"new_sqlite_classes": ["GameRoom"]`; the Worker routes a room code
   to its object with `env.ROOM.getByName(roomCode)`.
 
-### [ ] T3.2 — Accept WebSocket connections inside the Durable Object
+### [x] T3.2 — Accept WebSocket connections inside the Durable Object
 - **Depends on:** T3.1
 - **Files:** `src/GameRoom.js`
 - **Done when:** connections are accepted with `ctx.acceptWebSocket(server)`
   (never `server.accept()`), and each player's id and display name are stored with
   `ws.serializeAttachment()` and read back with `ws.deserializeAttachment()`.
 
-### [ ] T3.3 — Roster: join, leave, broadcast
+### [x] T3.3 — Roster: join, leave, broadcast
 - **Depends on:** T3.2
 - **Files:** `src/GameRoom.js`, `public/net.js`
 - **Done when:** when a second browser joins the same code, **both** lobbies show
   two players; closing one window removes that player from the other's list.
 - **This is the first visible proof that multiplayer works.**
 
-### [ ] T3.4 — Server-authoritative game state and the alarm tick
+### [x] T3.4 — Server-authoritative game state and the alarm tick
 - **Depends on:** T3.3
 - **Files:** `src/GameRoom.js`
 - **Done when:** the Durable Object holds each player's board, spawns pieces from a
@@ -147,14 +147,14 @@ is hosted without changing how it plays.
   cancelling the alarm when the last player leaves. **No `setInterval`, no
   `setTimeout`.**
 
-### [ ] T3.5 — Apply player input
+### [x] T3.5 — Apply player input
 - **Depends on:** T3.4
 - **Files:** `src/GameRoom.js`, `public/net.js`, `public/game.js`
 - **Done when:** pressing a key sends `{type:"input"}` to the room, the Durable
   Object applies it to that player's board, and the result comes back in the next
   `state` broadcast.
 
-### [ ] T3.6 — Broadcast state to every player
+### [x] T3.6 — Broadcast state to every player
 - **Depends on:** T3.5
 - **Files:** `src/GameRoom.js`
 - **Done when:** every tick sends a `state` message containing both players' boards
@@ -164,7 +164,7 @@ is hosted without changing how it plays.
 
 ## Phase 4 — The two-player screen
 
-### [ ] T4.1 — Render both boards
+### [x] T4.1 — Render both boards
 - **Depends on:** T3.6
 - **Files:** `public/index.html`, `public/style.css`, `public/game.js`
 - **Done when:** the match screen matches the Figma two-player design — your board
@@ -173,14 +173,14 @@ is hosted without changing how it plays.
   messages, not from local guessing.
 - **This is the assignment's definition of done.**
 
-### [ ] T4.2 — Garbage lines and the attack feed
+### [x] T4.2 — Garbage lines and the attack feed
 - **Depends on:** T4.1
 - **Files:** `src/GameRoom.js`, `public/game.js`
 - **Done when:** clearing 2 / 3 / 4 rows pushes 1 / 2 / 4 garbage rows onto the
   opponent's board, the attack feed line shows who sent what, and the segmented
   meter beside the board fills accordingly.
 
-### [ ] T4.3 — End of match
+### [x] T4.3 — End of match
 - **Depends on:** T4.1
 - **Files:** `src/GameRoom.js`, `public/index.html`
 - **Done when:** when one player tops out, both browsers show the same result
@@ -190,7 +190,7 @@ is hosted without changing how it plays.
 
 ## Phase 5 — Ship
 
-### [ ] T5.1 — Two-window end-to-end test
+### [~] T5.1 — Two-window end-to-end test
 - **Depends on:** T4.1
 - **Files:** none
 - **Done when:** two browser windows are opened at the live Cloudflare URL, the

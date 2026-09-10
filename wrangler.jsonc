@@ -1,0 +1,38 @@
+{
+  // Cloudflare Workers configuration.
+  // "assets" serves the files in ./public straight to the browser.
+  // The Worker itself only handles /api/* (the WebSocket connection).
+  "name": "bus131-tetris",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-10",
+
+  "observability": {
+    "enabled": true
+  },
+
+  "assets": {
+    "directory": "./public",
+    "not_found_handling": "single-page-application",
+    // Make sure the WebSocket route reaches the Worker instead of being
+    // answered with index.html by the static-asset handler.
+    "run_worker_first": ["/api/*"]
+  },
+
+  // One Durable Object class. Each game room is one instance of it,
+  // looked up by the room code.
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOM",
+        "class_name": "GameRoom"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["GameRoom"]
+    }
+  ]
+}

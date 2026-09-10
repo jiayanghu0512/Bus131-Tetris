@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TETRIS — Gem Edition</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<section id="screen-landing" class="screen">
+  <div class="landing-inner">
+    <div class="gem-float g1"></div>
+    <div class="gem-float g2"></div>
+    <div class="gem-float g3"></div>
+    <div class="gem-float g4"></div>
+    <h1 class="logo big">TETRIS</h1>
+    <p class="tagline center">A GLOWING MULTIPLAYER PUZZLE ARENA</p>
+    <div class="landing-actions">
+      <button id="btnSolo" class="btn-primary">PLAY SOLO</button>
+      <button id="btnMulti" class="btn-outline">MULTIPLAYER</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOIN / CREATE ROOM ============ -->
+<section id="screen-join" class="screen hidden">
+  <div class="join-inner">
+    <h1 class="logo small">TETRIS</h1>
+    <h2 class="heading">MULTIPLAYER</h2>
+
+    <div class="panel form-panel">
+      <label class="field-label" for="inputName">YOUR NAME</label>
+      <input id="inputName" class="field" maxlength="12" placeholder="JIAYANG" autocomplete="off" />
+
+      <button id="btnCreate" class="btn-primary wide">CREATE A ROOM</button>
+
+      <div class="divider"><span>OR JOIN ONE</span></div>
+
+      <label class="field-label" for="inputCode">ROOM CODE</label>
+      <input id="inputCode" class="field code" maxlength="6" placeholder="X7K9Q2" autocomplete="off" />
+      <button id="btnJoin" class="btn-outline wide">JOIN ROOM</button>
+
+      <p id="joinError" class="error-text"></p>
+    </div>
+
+    <button class="link-btn" data-goto="landing">← BACK</button>
+  </div>
+</section>
+
+<!-- ============ ROOM LOBBY ============ -->
+<section id="screen-lobby" class="screen hidden">
+  <div class="lobby-inner">
+    <h1 class="logo small">TETRIS</h1>
+    <h2 class="heading">ROOM LOBBY</h2>
+
+    <div class="panel code-card">
+      <div class="field-label center">ROOM CODE</div>
+      <div id="lobbyCode" class="room-code">------</div>
+      <button id="btnCopy" class="link-btn">TAP TO COPY ⧉</button>
+    </div>
+
+    <div id="playerList" class="player-list"></div>
+
+    <p class="hint" id="lobbyHint">WAITING FOR A SECOND PLAYER…</p>
+
+    <button id="btnStart" class="btn-start" disabled>START GAME</button>
+    <button class="link-btn" data-goto="landing" id="btnLeave">LEAVE ROOM</button>
+  </div>
+</section>
+
+<!-- ============ SOLO GAME ============ -->
+<section id="screen-solo" class="screen hidden">
+  <div class="page">
+    <header class="page-header">
+      <h1 class="logo">TETRIS</h1>
+      <p class="tagline">GEM EDITION — SINGLE PLAYER</p>
+    </header>
+
+    <main class="layout">
+      <div class="board-panel">
+        <canvas id="boardCanvas" width="260" height="520"></canvas>
+        <div id="pauseOverlay" class="overlay hidden">
+          <div class="overlay-title">PAUSED</div>
+          <div class="overlay-hint">PRESS P TO RESUME</div>
+        </div>
+        <div id="gameOverOverlay" class="overlay hidden">
+          <div class="overlay-title over">GAME OVER</div>
+          <div class="overlay-score">SCORE <span id="finalScore">0</span></div>
+          <button id="restartBtn" class="btn-primary">PLAY AGAIN</button>
+        </div>
+      </div>
+
+      <aside class="side-panel">
+        <section class="panel">
+          <h2 class="panel-header">NEXT</h2>
+          <canvas id="nextCanvas" width="120" height="76"></canvas>
+        </section>
+        <section class="panel">
+          <h2 class="panel-header">HOLD</h2>
+          <canvas id="holdCanvas" width="120" height="76"></canvas>
+        </section>
+        <section class="panel">
+          <h2 class="panel-header">STATS</h2>
+          <div class="stat-row full">
+            <span class="stat-label">SCORE</span>
+            <span class="stat-value" id="scoreValue">0</span>
+          </div>
+          <div class="stat-row split">
+            <div><span class="stat-label">LEVEL</span><div class="stat-value" id="levelValue">1</div></div>
+            <div><span class="stat-label">LINES</span><div class="stat-value" id="linesValue">0</div></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2 class="panel-header">CONTROLS</h2>
+          <div class="control-row"><span class="key">← →</span><span>Move</span></div>
+          <div class="control-row"><span class="key">↓</span><span>Soft Drop</span></div>
+          <div class="control-row"><span class="key">↑</span><span>Rotate</span></div>
+          <div class="control-row"><span class="key">SPACE</span><span>Hard Drop</span></div>
+          <div class="control-row"><span class="key">C</span><span>Hold</span></div>
+          <div class="control-row"><span class="key">P</span><span>Pause</span></div>
+        </section>
+        <button class="link-btn" data-goto="landing">← MAIN MENU</button>
+      </aside>
+    </main>
+  </div>
+</section>
+
+<!-- ============ MULTIPLAYER MATCH ============ -->
+<section id="screen-match" class="screen hidden">
+  <header class="match-header">
+    <h1 class="logo small">TETRIS</h1>
+    <div class="room-tag">ROOM <span id="matchCode">------</span></div>
+  </header>
+
+  <div class="match-body">
+    <!-- your board -->
+    <div class="match-side">
+      <div class="player-name me" id="myName">YOU</div>
+      <div class="board-panel">
+        <canvas id="myCanvas" width="260" height="520"></canvas>
+      </div>
+      <div class="match-score">SCORE <span id="myScore">0</span></div>
+    </div>
+
+    <!-- centre column -->
+    <div class="match-centre">
+      <div class="field-label center">MATCH</div>
+      <div class="vs-badge"><span>VS</span></div>
+      <div id="attackFeed" class="attack-feed"></div>
+      <div id="matchStatus" class="hint"></div>
+      <button id="btnLeaveMatch" class="link-btn" data-goto="landing">LEAVE MATCH</button>
+    </div>
+
+    <!-- opponents -->
+    <div class="match-side opponents" id="opponentArea"></div>
+  </div>
+
+  <div id="matchOverlay" class="match-overlay hidden">
+    <div class="overlay-title" id="matchResult">MATCH OVER</div>
+    <div class="overlay-hint" id="matchResultSub"></div>
+    <button id="btnBackToLobby" class="btn-primary">BACK TO LOBBY</button>
+  </div>
+</section>
+
+<script src="game.js"></script>
+<script src="net.js"></script>
+</body>
+</html>
