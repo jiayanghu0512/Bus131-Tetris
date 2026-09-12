@@ -5,7 +5,7 @@ code and play at the same time, each seeing the other player's board update live
 
 Built for **BUS 131, Week 2 (Brandeis University)** by **Jiayang Hu**.
 
-- **Live game:** https://bus131-tetris.pages.dev (single-player; multiplayer in progress)
+- **Live game:** https://bus131-tetris.jiayanghu.workers.dev
 - **Repository:** https://github.com/jiayanghu0512/Bus131-Tetris
 - **Design source:** [Figma mockups](https://www.figma.com/design/1opkWdtdWK3Y1DEbA65c5B)
 
@@ -107,6 +107,10 @@ See `FEATUREROADMAP_workplan.md` for the task-by-task plan and what is done.
 
 - ✅ Figma designs for all four screens
 - ✅ Single-player game, playable and deployed
-- ⬜ Deployment moved to Cloudflare Workers
-- ⬜ Room codes and lobby
-- ⬜ Live multiplayer via Durable Object + WebSocket
+- ✅ Deployment moved to Cloudflare Workers
+- ✅ Room codes and lobby
+- ✅ Live multiplayer via Durable Object + WebSocket
+
+Verified in production: two browser windows opened at the live URL, both typing
+the same room code, each showing the other player's blocks moving and their
+score updating live.

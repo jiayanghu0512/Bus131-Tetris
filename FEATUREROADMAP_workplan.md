@@ -38,7 +38,7 @@ Legend: `[x]` done · `[ ]` not started · `[~]` in progress
 - **Depends on:** T0.3
 - **Files:** none (hosting configuration)
 - **Done when:** a public Cloudflare URL loads the playable game.
-- **Status:** done — https://bus131-tetris.pages.dev (Cloudflare Pages)
+- **Status:** done — https://bus131-tetris.jiayanghu.workers.dev (Cloudflare Workers)
 
 ### [x] T0.5 — Write the three project documents
 - **Depends on:** T0.1–T0.4
@@ -82,7 +82,7 @@ is hosted without changing how it plays.
 - **Done when:** the Worker serves the static assets for normal page loads and
   reserves the route `/api/room/:code` for the WebSocket upgrade used later.
 
-### [ ] T1.4 — Deploy to Workers and verify
+### [x] T1.4 — Deploy to Workers and verify
 - **Depends on:** T1.3, T0.6
 - **Files:** none
 - **Done when:** `npx wrangler deploy` succeeds and the printed `*.workers.dev`
@@ -190,14 +190,14 @@ is hosted without changing how it plays.
 
 ## Phase 5 — Ship
 
-### [~] T5.1 — Two-window end-to-end test
+### [x] T5.1 — Two-window end-to-end test
 - **Depends on:** T4.1
 - **Files:** none
 - **Done when:** two browser windows are opened at the live Cloudflare URL, the
   same room code is typed into both, and each window shows the other player's
   blocks moving. Ten seconds to check, no files opened.
 
-### [ ] T5.2 — Final deploy and submission
+### [x] T5.2 — Final deploy and submission
 - **Depends on:** T5.1
 - **Files:** `README.md` (update the live URL)
 - **Done when:** the final version is deployed and the two submission links are
